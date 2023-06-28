@@ -1,0 +1,20 @@
+// spinner global printer and print settings
+{
+	"filamentDiameter ": 1.75,
+    "bedsizeX"         : 400,
+    "bedsizeY"         : 400,
+    "nozzleSize"       : 0.80,
+    "bedTemp"          :  65,
+    "eTemp"            : 215,
+    "travelSpeed"      : 4000,
+    "printSpeed"       : 700,
+    "retractLength"    : 2,
+    "retractSpeed"     : 3000,
+	"printSpeeds"      : [ 1100,  350, 1100, 350 ],
+    "fanStarts"        : [    0.5, 45,  105, 145 ],
+    "fanSpeeds"        : [  150,  255,  150, 255 ],
+	"layerHeight"      : 0.4,
+	"extrusionFactor"  : 1.0
+};
+
+

@@ -4,48 +4,40 @@ LIB_DIRS = -L. -Lgeometry
 LIBS = -ljsoncpp -lgeometry 
 LDFLAGS = $(LIB_DIRS) $(LIBS)
 
-OBJS = spinner.main.o \
-       config/readConfig.o \
-	   import/import.o \
-	   spin-logic/circular_profile.o \
-	   gcode/gcode.o
+#OBJS = spinner.main.o \
+#       config/readConfig.o \
+#	   import/import.o \
+#	   spin-logic/circular_profile.o \
+#	   gcode/gcode.o
 
-DIRS = config geometry import spin-logic gcode
+DIRS = config.d geometry.d import.d spin-logic.d gcode.d
 
-spinner:  $(DIRS) spinner.main.cpp $(OBJS)
-	g++ $(CPPFLAGS) $(LIB_DIRS) $(OBJS) $(LIBS) -o spinner
+all:	spinner profile_maker
+	
+spinner:	$(DIRS)
+	cd spinner; $(MAKE)
 
-spinner.main.o:	spinner.main.cpp
-	g++ $(CPPFLAGS) -c spinner.main.cpp
+profile_maker:	$(DIRS)
+	cd profile_maker; $(MAKE)
 
-profile_maker:	profile_maker.cpp
-	g++ $(CPPFLAGS) -c profile_maker.cpp
-	g++ -o profile_maker profile_maker.o $(LDFLAGS)
+config.d:
+	cd config; $(MAKE)
 
-config:	config/*.cpp config/*.h
-	cd config; make
+geometry.d: 
+	cd geometry; $(MAKE)
 
-geometry: 
-	cd geometry; make
+gcode.d: 
+	cd gcode; $(MAKE)
 
-gcode: 
-	cd gcode; make
+spin-logic.d: 
+	cd spin-logic; $(MAKE)
 
-spin-logic: 
-	cd spin-logic; make
-
-import: 
-	cd import; make
-
-
-out2.gcode: spinner *.json
-	./spinner -m > profile_test.data
-	./spinner -c spinner.json -p profile_test.data > out2.gcode
+import.d: 
+	cd import; $(MAKE)
 
 clean:
-	rm -f *.o
-	cd import && make clean
-	cd gcode && make clean
-	cd geometry && make clean
-	cd config && make clean
-	cd spin-logic && make clean
+	cd import && $(MAKE) clean
+	cd gcode && $(MAKE) clean
+	cd geometry && $(MAKE) clean
+	cd config && $(MAKE) clean
+	cd spin-logic && $(MAKE) clean

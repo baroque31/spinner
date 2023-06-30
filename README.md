@@ -23,6 +23,7 @@ This repo will build two executable objects:
     make your own to develop your own profile shapes.
 
 # To Build:
+As far as I know, this builds only on Linux.  It uses at least one C++20 feature. I expect it would compile fine under windows with g++.
 
 1.  The **jsoncpp** library is required and must be installed to build
 2.  cd src

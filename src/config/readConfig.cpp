@@ -8,11 +8,14 @@ Config::Config(std::string filename)
   std::ifstream ifs;
   ifs.open(filename);
 
-  Json::CharReaderBuilder builder;
-  builder["collectComments"] = true;
-  JSONCPP_STRING errs;
-  if (!parseFromStream(builder, ifs, &C, &errs)) {
-    std::cout << errs << std::endl;
+  if (ifs.good())
+  {
+	  Json::CharReaderBuilder builder;
+	  builder["collectComments"] = true;
+	  JSONCPP_STRING errs;
+	  if (!parseFromStream(builder, ifs, &C, &errs)) {
+		std::cout << errs << std::endl;
+	  }
   }
 
   fanSpeeds();

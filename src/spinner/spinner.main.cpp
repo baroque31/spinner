@@ -77,11 +77,11 @@ int main(int argc, char *argv[])
    G.beginPrint();
 
    NonPlanarPath prime = spiral_profile ( I.getVal(), CV, 0 );
-   translate(prime, CV.bedsizeX()/2, CV.bedsizeY()/2, 0);
+//   translate(prime, CV.bedsizeX()/2, CV.bedsizeY()/2, 0);
    (void) G.paint3DPath ( prime );
 
    NonPlanarPath wee = spiral_profile ( I.getVal(), CV, 1 );
-   translate(wee, CV.bedsizeX()/2, CV.bedsizeY()/2, 0);
+//   translate(wee, CV.bedsizeX()/2, CV.bedsizeY()/2, 0);
    (void) G.paint3DPath ( wee );
 
    G.endPrint();

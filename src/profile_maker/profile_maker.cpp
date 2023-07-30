@@ -58,9 +58,49 @@ Path simple_flair()
     return NonPlanar2Path(bezier_curveV ( 0.01, Curve));
 }    
 
+Path hall_sconce()
+{
+	double mount_dia = 40.15;
+	double mount_tall = 18.5;
+	double xoff = 5;
+
+	Path::PlanarSequence P  = { { xoff + 106/2,         0 }, 
+	                            { xoff +  5/2,         50 },   
+								{ xoff + 170,         125 },   
+								{ mount_dia/2, 115 }   
+							  };
+	Path curve(P);
+	NonPlanarPath Curve = Path2NonPlanar (curve, 0);
+    Path P1  = NonPlanar2Path(bezier_curveV ( 0.01, Curve));
+	P1.push_back( point2D(mount_dia/2, 130) );
+	return P1;
+} 
+
+Path hall_sconce2()
+{
+    double mount_dia = 40.15;
+    double mount_tall = 18.5;
+    double xoff = 5;
+
+    Path::PlanarSequence P  = { 
+                                { mount_dia/2,       25 },
+	                            { xoff + 50,         40 },   
+                                { xoff + 60,         145 }, 
+                                { mount_dia/2,       200 }
+                              };
+    Path curve(P);
+    NonPlanarPath Curve = Path2NonPlanar (curve, 0);
+    Path P1;
+    P1.push_back( point2D(mount_dia/2, 0) );
+	Path P2 ( NonPlanar2Path(bezier_curveV ( 0.01, Curve)) );
+	P1.concat ( P2 );
+    return P1;
+}
+
+
 int main(int argc, char *argv[])
 {
-    Path P = simple_flair();
+    Path P = hall_sconce2();
 	//P.scale(2,2);
 	cout << P;
 }

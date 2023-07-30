@@ -98,15 +98,15 @@ spiral_profile (Path profile, Config CV, int stage)
    // prime 3 rotations of filament...
    if ( stage == 0 )
    {
-       for (auto &p2d : arc(0, 359, rPrime+10+2*nozzlesize, 360/sides).getData())  shape.push_back ( point3D(p2d.x, p2d.y, z-z_start) ); 
-       for (auto &p2d : arc(0, 359, rPrime+10+1*nozzlesize, 360/sides).getData())  shape.push_back ( point3D(p2d.x, p2d.y, z-z_start) ); 
-       for (auto &p2d : arc(0, 359, rPrime+10+0*nozzlesize, 360/sides).getData())  shape.push_back ( point3D(p2d.x, p2d.y, z-z_start) ); 
+       for (auto &p2d : arc(0, 360, rPrime+10+2*nozzlesize, 360.0/sides).getData())  shape.push_back ( point3D(p2d.x, p2d.y, z-z_start) ); 
+       for (auto &p2d : arc(0, 360, rPrime+10+1*nozzlesize, 360.0/sides).getData())  shape.push_back ( point3D(p2d.x, p2d.y, z-z_start) ); 
+       for (auto &p2d : arc(0, 360, rPrime+10+0*nozzlesize, 360.0/sides).getData())  shape.push_back ( point3D(p2d.x, p2d.y, z-z_start) ); 
        return shape;
    }
 
    //start with a flat circle.
-   for (auto &p2d : arc(0, 359, rPrime, 360/sides).getData())  shape.push_back ( point3D(p2d.x, p2d.y, z-z_start, 1.2) ); 
-   for (auto &p2d : arc(0, 359, rPrime-CV.nozzleSize(), 360/sides).getData())  shape.push_back ( point3D(p2d.x, p2d.y, z-z_start, 1.2) ); 
+   for (auto &p2d : arc(0, 360, rPrime, 360.0/sides).getData())  shape.push_back ( point3D(p2d.x, p2d.y, z-z_start, 1.2) ); 
+   for (auto &p2d : arc(0, 360, rPrime-CV.nozzleSize(), 360.0/sides).getData())  shape.push_back ( point3D(p2d.x, p2d.y, z-z_start, 1.2) ); 
    // now begin the spiral stage...
    double extrusion_factor;
    double previous_dh = tlh;
@@ -122,8 +122,8 @@ spiral_profile (Path profile, Config CV, int stage)
 		     extrusion_factor *= 1.5;  // 50% over extrusion on the first layer
 		 }
 
-		 for (int angle=0; angle<=360; angle+=(360/sides)) {
-		     dr = radius_at(z+(dh*angle/360), profile);
+		 for (double angle=0; angle<=360.0; angle+=(360.0/sides)) {
+		     dr = radius_at(z+(dh*angle/360.0), profile);
 			 point2D p2d = circle_point(dr, angle);
 			 point3D p3d(p2d.x, p2d.y, z+(dh*angle/360.0)-z_start, extrusion_factor);
 			 shape.push_back(p3d);
@@ -132,8 +132,8 @@ spiral_profile (Path profile, Config CV, int stage)
 		 previous_dh = dh;
 		 layer_count++;
   }
-  for (auto &p2d : arc(0, 360, dr, 360/sides).getData())     shape.push_back ( point3D(p2d.x, p2d.y, z-z_start) ); 
-  for (auto &p2d : arc(0, 360, dr-threshold/2, 360/sides).getData()) shape.push_back ( point3D(p2d.x, p2d.y, z-z_start) ); 
+  for (auto &p2d : arc(0, 360, dr, 360.0/sides).getData())     shape.push_back ( point3D(p2d.x, p2d.y, z-z_start) ); 
+  for (auto &p2d : arc(0, 360, dr-threshold/2, 360.0/sides).getData()) shape.push_back ( point3D(p2d.x, p2d.y, z-z_start) ); 
 //  shape.push_back( point3D ( 100, 100, z-z_start ));
   /*
   Path filltop = fill_circle(dr, 0.3);

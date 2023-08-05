@@ -78,9 +78,9 @@ Path hall_sconce()
 
 Path hall_sconce2()
 {
-    double mount_dia = 40.15;
+    double mount_dia = 41.55;
     double mount_tall = 18.5;
-    double xoff = 5;
+    double xoff = 15;
 
     Path::PlanarSequence P  = { 
                                 { mount_dia/2,       25 },

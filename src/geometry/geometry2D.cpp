@@ -42,6 +42,29 @@ Path arcat ( double x, double y,  double a0, double a1, double r, double delta)
 	return curve;
 }
 
+// sign of rotations arg indicates direction of spiral
+Path spiral ( double inside_rad, double outside_rad, double rotations, double starting_angle, double delta)
+{
+    Path out;
+    double dx = outside_rad - inside_rad;
+    double total_degrees = 360 * rotations - starting_angle;
+    bool clockwise = total_degrees < 0 ? false : true;
+
+    if ( dx < 0 ) {
+        cerr << "spiral: inside radius greater than outside. Returning empty spiral" << endl;
+        return out;
+    }
+
+    if (clockwise)
+		for (double a=starting_angle; a<total_degrees; a += delta)
+			out.push_back ( circle_point ( inside_rad + (a / total_degrees) * dx, a ));
+    else
+		for (double a=total_degrees; a > starting_angle; a -= delta)
+			out.push_back ( circle_point ( inside_rad + (a / total_degrees) * dx, a ));
+
+    return out;
+}
+ 
 point2D add_2_points (point2D p0, point2D p1)
 {
    return point2D(p0.x+p1.x, p0.y+p1.y);

@@ -14,6 +14,7 @@ Path four_points_centered(double dx, double dy);
 point2D circle_point (double radius, double angle);
 Path arcat ( double x, double y,  double a0, double a1, double r, double delta=5);
 Path arc ( double a0, double a1, double r, double delta=5);
+Path spiral ( double inside_rad, double outside_rad, double rotations, double starting_angle=0, double delta=5);
 
 
 Path

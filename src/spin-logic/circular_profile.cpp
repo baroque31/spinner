@@ -40,7 +40,7 @@ Path fill_circle ( double radius, double nozzle_dia )
       int sign = 1;
       double angle;
       
-      for (X=-(radius-nozzle_dia); X < radius-nozzle_dia; X+=nozzle_dia ) {
+      for (X=-(radius-nozzle_dia/2); X < radius-nozzle_dia/2; X+=nozzle_dia ) {
            angle = acos (X/radius);
 		   Y = sin(angle) * radius * sign;
 		   pattern.push_back ( point2D(X, Y) );
@@ -80,6 +80,7 @@ spiral_profile (Path profile, Config CV, int stage)
    double tlh = CV.layerHeight(); // target layer height
    double threshold = CV.overhang();
    double sides = CV.sides();
+   int    shells = CV.shells();
    double z_start = z;
    double dr;
    int layer_count = 0;
@@ -122,12 +123,24 @@ spiral_profile (Path profile, Config CV, int stage)
 		     extrusion_factor *= 1.5;  // 50% over extrusion on the first layer
 		 }
 
+		if (shells > 1)
+		{
+		  bool first=true;
+		  double outside_rad =  radius_at(z, profile) - nozzlesize;
+		  double inside_rad = outside_rad - (shells-1) * nozzlesize;
+		  for (auto &p2d : spiral(inside_rad, outside_rad, shells-1, 5).getData())  {
+				shape.push_back ( point3D(p2d.x, p2d.y, z-z_start, first ? 0 : extrusion_factor) ); 
+				first=false;
+		  }
+		}
+
 		 for (double angle=0; angle<=360.0; angle+=(360.0/sides)) {
-		     dr = radius_at(z+(dh*angle/360.0), profile);
+			 dr = radius_at(z+(dh*angle/360.0), profile);
 			 point2D p2d = circle_point(dr, angle);
 			 point3D p3d(p2d.x, p2d.y, z+(dh*angle/360.0)-z_start, extrusion_factor);
 			 shape.push_back(p3d);
 		 }
+
 		 z += dh;
 		 previous_dh = dh;
 		 layer_count++;

@@ -9,6 +9,7 @@
 
 using namespace std;
 
+#define MAX(a,b)	((a)>(b)?(a):(b))
 
 void Gcode::gotoXY(const point2D &p) 
 { 
@@ -126,6 +127,10 @@ void Gcode::setPrint(double z)
 	static double lastPrint = 0;
 
 	double printspeed = CV.getPrintSpeedAtZ(z);
+	if (fabs ( printspeed ) < 10 )
+	{
+	     cerr << "setPrint: lastPrint: " << lastPrint << " Z: " << z << " printspeed: " << printspeed << endl;
+    }
 	if (lastPrint != printspeed) {
 		out1param("G1", 'F', round(printspeed));
 		lastPrint = printspeed;
@@ -217,6 +222,7 @@ void Gcode::paint3DPath(NonPlanarPath nonPlanarSection)
 {
 	double extrusionRatio  = getExtrusionRatio();
 	double extrusionFactor = CV.extrusionFactor();
+	double maxZ = 0.0;
 
 	long nPoints = nonPlanarSection.size();
 	/// move to start
@@ -227,13 +233,14 @@ void Gcode::paint3DPath(NonPlanarPath nonPlanarSection)
 	setPrintSpeed();
 	unretract();
 	for (long l=0; l<nPoints-1; l++) {
-	 double strokeLen = nonPlanarSection[l].hypot(nonPlanarSection[l+1]);
-	 out4param ( "G1", 'X', nonPlanarSection[l+1].x,
-					   'Y', nonPlanarSection[l+1].y,
-					   'Z', nonPlanarSection[l+1].z,
-					   'E', strokeLen * extrusionRatio * extrusionFactor * nonPlanarSection[l+1].Efactor); 
-	 setFan(nonPlanarSection[l+1].z);
-	 setPrint(nonPlanarSection[l+1].z);
+		 double strokeLen = nonPlanarSection[l].hypot(nonPlanarSection[l+1]);
+		 out4param ( "G1", 'X', nonPlanarSection[l+1].x,
+						   'Y', nonPlanarSection[l+1].y,
+						   'Z', nonPlanarSection[l+1].z,
+						   'E', strokeLen * extrusionRatio * extrusionFactor * nonPlanarSection[l+1].Efactor); 
+		 maxZ = MAX(maxZ, nonPlanarSection[l+1].z);
+		 setFan(maxZ);
+		 setPrint(maxZ);
 	}
 	retract();
 };

@@ -39,6 +39,7 @@ class Config
 		double filamentDiameter(){ return C.get("filamentDiameter", 1.75).asDouble(); }
 		double extrusionFactor() { return C.get("extrusionFactor",  0.85).asDouble(); }
 		double sides()           { return C.get("sides",             360).asDouble(); }
+		int shells()             { return C.get("shells",             1).asInt(); }
 };
 
 
